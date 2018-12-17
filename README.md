@@ -1,12 +1,12 @@
 # OpenFlow Toolkit
 
-Version 0.1
+Version 0.1.1
 Current functionality:
 
 * Select controller script
 * Specify log level
 * Set command-line arguments
-* Opens a command prompt which executes the script in python
+* Connect to the VM via SSH
 
 To-Do:
 
