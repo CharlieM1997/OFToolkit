@@ -5,22 +5,33 @@
  */
 package Application;
 
+import ch.ethz.ssh2.ChannelCondition;
+import ch.ethz.ssh2.Connection;
+import ch.ethz.ssh2.Session;
+import ch.ethz.ssh2.StreamGobbler;
 import java.io.BufferedReader;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.filechooser.*;
+
+import java.io.OutputStreamWriter;
+
 /**
  *
  * @author 164776
  */
 
-        
 public class MainGUI extends javax.swing.JFrame {
+
     public String script;
     public final String name = "python ";
+    public final String guestIP = "192.168.56.102";
+    public final String username = "mininet";
+    public final String password = "mininet";
+
     /**
      * Creates new form MainGUI
      */
@@ -52,9 +63,7 @@ public class MainGUI extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jSeparator3 = new javax.swing.JSeparator();
-        jLabel6 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -92,10 +101,6 @@ public class MainGUI extends javax.swing.JFrame {
         jCheckBox1.setText("Automatically open XMing?");
 
         jCheckBox2.setText("Automatically open Mininet?");
-
-        jLabel6.setText("How do you want to control the network?");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Control via SSH Client", "Control via GUI" }));
 
         jButton3.setText("Configure PuTTY");
 
@@ -154,8 +159,6 @@ public class MainGUI extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jCheckBox2)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel6)
                                             .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -218,17 +221,9 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addGap(14, 14, 14)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(24, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -248,12 +243,12 @@ public class MainGUI extends javax.swing.JFrame {
     //Controller Script Browse Button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         final FileFilter pyFilter = new FileNameExtensionFilter("Python file", "py");
-        
+
         jFileChooser1 = new JFileChooser();
-        
+
         jFileChooser1.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jFileChooser1.setFileFilter(pyFilter);
-        
+
         int returnVal = jFileChooser1.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             jTextField1.setText(jFileChooser1.getSelectedFile().toString());
@@ -271,13 +266,70 @@ public class MainGUI extends javax.swing.JFrame {
 
     //Run Script Button
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        script = (name+jTextField1.getText()+" log.level --"+jComboBox2.getSelectedItem().toString()+" "+jTextField2.getText());
-        Runtime rt = Runtime.getRuntime();
-        try {
-            Process p = rt.exec("cmd /c start cmd /k \" " + script + " \"");
-        } catch (IOException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        /**
+         * script = (name+jTextField1.getText()+" log.level
+         * --"+jComboBox2.getSelectedItem().toString()+"
+         * "+jTextField2.getText()); Runtime rt = Runtime.getRuntime(); try {
+         * Process p = rt.exec("cmd /c start cmd /k \" " + script + " \""); }
+         * catch (IOException ex) {
+         * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
+         * ex); }
+         */
+
+        /**
+         * try { String test = new Shell.Plain( new SSHByPassword( guestIP, 22,
+         * username, password) ).exec("echo 'test'"); } catch
+         * (UnknownHostException ex) {
+         * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
+         * ex); } catch (IOException ex) {
+         * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
+         * ex);
         }
+         */
+        try {
+            Connection conn = new Connection(guestIP);
+            conn.connect();
+            boolean isAuthenticated = conn.authenticateWithPassword(username, password);
+
+            if (!isAuthenticated) {
+                throw new IOException("Authentication failed.");
+            }
+
+            Session sess = conn.openSession();
+
+            sess.requestX11Forwarding(guestIP, 22, null, true);
+
+            sess.execCommand("uname -a && date && uptime && who");
+
+            System.out.println("Here is some information about the remote host:");
+            
+            InputStream stdout = new StreamGobbler(sess.getStdout());
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(stdout));
+
+            while (true) {
+                String line = br.readLine();
+                if (line == null) {
+                    br.close();
+                    break;
+                }
+                System.out.println(line);
+            }
+
+            /* Show exit status, if available (otherwise "null") */
+            System.out.println("ExitCode: " + sess.getExitStatus());
+
+            /* Close this session */
+            sess.close();
+
+            /* Close the connection */
+            conn.close();
+
+        } catch (IOException e) {
+            e.printStackTrace(System.err);
+            System.exit(2);
+        }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
@@ -291,7 +343,7 @@ public class MainGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-public static void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -315,12 +367,12 @@ public static void main(String args[]) {
         }
         //</editor-fold>
 
-    JFrame frame = new JFrame("OpenFlow Toolkit");
-    frame.setContentPane(new MainGUI().jPanel1);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
-    frame.setVisible(true);
-}
+        JFrame frame = new JFrame("OpenFlow Toolkit");
+        frame.setContentPane(new MainGUI().jPanel1);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -330,13 +382,11 @@ public static void main(String args[]) {
     private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
