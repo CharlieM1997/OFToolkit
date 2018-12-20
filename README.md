@@ -1,18 +1,16 @@
 # OpenFlow Toolkit
 
-Version 0.1.1
+Version 0.1.2
 Current functionality:
 
 * Select controller script
 * Specify log level
 * Set command-line arguments
-* Connect to the VM via SSH
+* Transfer controller script to the VM via SFTP
 
 To-Do:
 
-* Change the 'Run Script' functionality so that it either executes in an SSH Client connected to the Virtual OS, or in the Virtual OS's GUI
-* Automatically opens X11, Mininet (if possible? It might be easier and time-saving to assume that the Virtual Network is already running) and an SSH Client
+* Create an OpenFlow network topology in the toolkit and pack it into a topology file, or select a pre-made topology file
 * Quick button to immediately access PuTTY settings for setup
-* Add functionality for Topology file
-* Add support for a transfer protocol so that the POX configuration is imported to the Virtual OS
+* Set up the network in the VM, and open a command window outside of the VM to allow the user to control and modify the network
 * More, TBD later
