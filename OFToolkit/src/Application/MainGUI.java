@@ -7,9 +7,13 @@ package Application;
 
 import ch.ethz.ssh2.ChannelCondition;
 import ch.ethz.ssh2.Connection;
+import ch.ethz.ssh2.SFTPv3Client;
+import ch.ethz.ssh2.SFTPv3FileHandle;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,12 +22,13 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 import java.io.OutputStreamWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author 164776
  */
-
 public class MainGUI extends javax.swing.JFrame {
 
     public String script;
@@ -72,6 +77,19 @@ public class MainGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextField1.addKeyListener (new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                super.keyReleased(evt);
+                if (jTextField1.getText().length() > 0)
+                {
+                    jButton4.setEnabled(true);
+                } else
+                {
+                    jButton4.setEnabled(false);
+                }
+            }
+        });
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -273,7 +291,8 @@ public class MainGUI extends javax.swing.JFrame {
          * Process p = rt.exec("cmd /c start cmd /k \" " + script + " \""); }
          * catch (IOException ex) {
          * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
-         * ex); }
+         * ex);
+        }
          */
 
         /**
@@ -283,8 +302,7 @@ public class MainGUI extends javax.swing.JFrame {
          * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
          * ex); } catch (IOException ex) {
          * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
-         * ex);
-        }
+         * ex); }
          */
         try {
             Connection conn = new Connection(guestIP);
@@ -299,31 +317,54 @@ public class MainGUI extends javax.swing.JFrame {
 
             sess.requestX11Forwarding(guestIP, 22, null, true);
 
-            sess.execCommand("uname -a && date && uptime && who");
+            SFTPv3Client client = new SFTPv3Client(conn);
+            File pScript = new File(jTextField1.getText());
 
-            System.out.println("Here is some information about the remote host:");
-            
-            InputStream stdout = new StreamGobbler(sess.getStdout());
+            SFTPv3FileHandle handle = client.createFile(pScript.getName());
+            FileInputStream stream = new FileInputStream(pScript);
+            byte[] buffer = new byte[1024];
+            int i;
+            long offset = 0;
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(stdout));
-
-            while (true) {
-                String line = br.readLine();
-                if (line == null) {
-                    br.close();
-                    break;
-                }
-                System.out.println(line);
+            while ((i = stream.read(buffer)) != -1) {
+                client.write(handle, offset, buffer, 0, i);
+                offset += i;
             }
 
-            /* Show exit status, if available (otherwise "null") */
-            System.out.println("ExitCode: " + sess.getExitStatus());
+            client.closeFile(handle);
 
-            /* Close this session */
+            if (handle.isClosed()) {
+                System.out.println("closed");
+            }
+
             sess.close();
-
-            /* Close the connection */
+            client.close();
+            /**
+             * Session sess = conn.openSession();
+             *
+             * sess.requestX11Forwarding(guestIP, 22, null, true);
+             *
+             * sess.execCommand("uname -a && date && uptime && who");
+             *
+             * System.out.println("Here is some information about the remote
+             * host:");
+             *
+             * InputStream stdout = new StreamGobbler(sess.getStdout());
+             *
+             * BufferedReader br = new BufferedReader(new
+             * InputStreamReader(stdout));
+             *
+             * while (true) { String line = br.readLine(); if (line == null) {
+             * br.close(); break; } System.out.println(line); }
+             *
+             * // Show exit status, if available (otherwise "null")
+             * System.out.println("ExitCode: " + sess.getExitStatus());
+             *
+             * // Close this session sess.close();
+             *
+             * // Close the connection
             conn.close();
+             */
 
         } catch (IOException e) {
             e.printStackTrace(System.err);
