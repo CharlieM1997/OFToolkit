@@ -1,12 +1,13 @@
 # OpenFlow Toolkit
 
-Version 0.1.2
+Version 0.1.3
 Current functionality:
 
 * Select controller script
 * Specify log level
 * Set command-line arguments
 * Transfer controller script to the VM via SFTP
+* Basic interactive graph
 
 To-Do:
 
