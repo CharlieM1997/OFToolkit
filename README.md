@@ -1,6 +1,6 @@
-#OpenFlow Toolkit
+# OpenFlow Toolkit
 
-Version 1.0
+## Version 1.0
 
 Current features:
 * Transfer an OpenFlow controller and/or a Mininet topology from a local machine to a VM
