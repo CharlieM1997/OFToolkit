@@ -6,7 +6,11 @@
 package OFGraph;
 
 import JSSHTerminal.MainPanel;
+import java.io.File;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -19,20 +23,27 @@ import javax.swing.filechooser.*;
 public class MainGUI extends javax.swing.JFrame {
 
     public String script;
-    public final String name = "python ";
-    public final String guestIP = "192.168.56.102";
-    public final String username = "mininet";
-    public final String password = "mininet";
-    public final String cmd = "cmd /c start /wait cmd /c ^\"";
-    public final String cmdPersist = "cmd /c start /wait cmd /k ^\"";
-    public final int port = 22;
-    private String loc = "C:\\Program Files (x86)\\PuTTY";
+    public final String name;
+    public Inet4Address guestIP;
+    public String username;
+    public String password;
+    public final String cmd;
+    public final String cmdPersist;
+    public int port = 22;
+    private String loc;
     private static MainGUI frame;
 
     /**
      * Creates new form MainGUI
      */
-    public MainGUI() {
+    public MainGUI() throws UnknownHostException {
+        this.loc = "C:\\Program Files (x86)\\PuTTY";
+        this.cmdPersist = "cmd /c start /wait cmd /k ^\"";
+        this.cmd = "cmd /c start /wait cmd /c ^\"";
+        this.name = "python ";
+        this.guestIP = (Inet4Address) InetAddress.getByName("192.168.56.102");
+        this.username = "mininet";
+        this.password = "mininet";
         initComponents();
     }
 
@@ -46,6 +57,19 @@ public class MainGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField9 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -69,6 +93,106 @@ public class MainGUI extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jButton9 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField10 = new javax.swing.JTextField();
+        jButton12 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jTextField11 = new javax.swing.JTextField();
+        jButton13 = new javax.swing.JButton();
+
+        jLabel6.setText("Username:");
+
+        jLabel7.setText("Password:");
+
+        jLabel8.setText("IP Address:");
+
+        jLabel9.setText("Port:");
+
+        jTextField5.setText(username);
+
+        jTextField6.setText(password);
+
+        jTextField7.setText(guestIP.getHostAddress());
+
+        jTextField8.setText(Integer.toString(port));
+
+        jButton10.setText("Cancel");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
+        jButton11.setText("OK");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("PuTTY Location:");
+
+        jTextField9.setText(loc);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField5)
+                                .addComponent(jTextField6)
+                                .addComponent(jTextField8)
+                                .addComponent(jTextField9))
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton11)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton10)
+                    .addComponent(jButton11))
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +294,50 @@ public class MainGUI extends javax.swing.JFrame {
 
         jTextField4.setText("sudo mn");
 
+        jButton9.setText("VM Config");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Path to VeriFlow (optional):");
+
+        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField10ActionPerformed(evt);
+            }
+        });
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField10KeyTyped(evt);
+            }
+        });
+
+        jButton12.setText("Browse");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Enter VeriFlow command-line arguments here:");
+
+        jTextField11.setText("./VeriFlow");
+        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField11ActionPerformed(evt);
+            }
+        });
+
+        jButton13.setText("Run VeriFlow");
+        jButton13.setEnabled(false);
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -177,66 +345,88 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(11, 11, 11))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(10, 10, 10))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jSeparator2))
+                        .addComponent(jSeparator1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                            .addComponent(jLabel5)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                            .addComponent(jLabel12)
+                            .addComponent(jTextField11))
+                        .addGap(11, 11, 11)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(535, 535, 535)
+                        .addComponent(jButton5))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(jSeparator3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator1)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(10, 10, 10)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator2)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton9))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
@@ -246,9 +436,14 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton12))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(7, 7, 7)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -257,13 +452,19 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -271,8 +472,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addGap(5, 5, 5))
+                .addComponent(jButton5))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -290,7 +490,7 @@ public class MainGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        MainPanel mPanel = new MainPanel(guestIP, username, password, 80, 24, 500, false);
+        MainPanel mPanel = new MainPanel(guestIP.getHostAddress(), username, password, 80, 24, 500, false);
         mPanel.setExitOnClose(false);
         mPanel.setSSHPort(port);
         mPanel.setAnswerYes(false);
@@ -302,20 +502,19 @@ public class MainGUI extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
             try {
-            if (jTextField3.getText().length() > 0) {
-                script = ("\"" + loc + "\"\\pscp.exe  -pw " + password + " \"" + jTextField3.getText() + "\" " + username + "@" + guestIP + ":/home/mininet/");
-                Runtime rt = Runtime.getRuntime();
-                Process p = rt.exec(cmd + script + "\"");
-                p.waitFor();
+                if (jTextField3.getText().length() > 0) {
+                    script = ("\"" + loc + "\"\\pscp.exe  -pw " + password + " \"" + jTextField3.getText() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
+                    Runtime rt = Runtime.getRuntime();
+                    Process p = rt.exec(cmd + script + "\"");
+                    p.waitFor();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "The controller script field must not be empty.", "Controller script missing", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException | InterruptedException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else {
-                JOptionPane.showMessageDialog(frame, "The controller script field must not be empty.", "Controller script missing", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (IOException | InterruptedException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-        MainPanel mnPanel = new MainPanel(guestIP, username, password, 80, 24, 500, false);
+        MainPanel mnPanel = new MainPanel(getGuestIP(), username, password, 80, 24, 500, false);
         mnPanel.setExitOnClose(false);
         mnPanel.setSSHPort(port);
         mnPanel.setAnswerYes(false);
@@ -331,11 +530,15 @@ public class MainGUI extends javax.swing.JFrame {
             jButton1.setEnabled(true);
             jTextField3.setText(null);
             jButton2.setEnabled(true);
+            jTextField10.setText(null);
+            jButton12.setEnabled(true);
         } else { //if (jComboBox1.getSelectedItem().toString().equals("Mininet"))
             jTextField1.setText("/home/mininet/pox/");
             jButton1.setEnabled(false);
             jTextField3.setText("/home/mininet/topologies/example.mn");
             jButton2.setEnabled(false);
+            jTextField10.setText("/home/mininet/VeriFlow");
+            jButton12.setEnabled(false);
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -367,9 +570,9 @@ public class MainGUI extends javax.swing.JFrame {
          */
 
         /**
-         * try { String test = new Shell.Plain( new SSHByPassword( guestIP, 22,
-         * username, password) ).exec("echo 'test'"); } catch
-         * (UnknownHostException ex) {
+         * try { String test = new Shell.Plain( new SSHByPassword(
+         * guestIP.getHostAddress(), 22, username, password) ).exec("echo
+         * 'test'"); } catch (UnknownHostException ex) {
          * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
          * ex); } catch (IOException ex) {
          * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
@@ -380,13 +583,13 @@ public class MainGUI extends javax.swing.JFrame {
         } else {
             Runtime rt = Runtime.getRuntime();
             if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
-                script = ("\"" + loc + "\"\\pscp.exe -r  -pw " + password + " \"" + jTextField1.getText() + "\" " + username + "@" + guestIP + ":/home/mininet/");
+                script = ("\"" + loc + "\"\\pscp.exe -r -pw " + password + " \"" + jTextField1.getText() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
 
                 try {
                     Process p = rt.exec(cmd + script + "\"");
                     p.waitFor();
                     if (jTextField3.getText().length() > 0) {
-                        script = ("\"" + loc + "\"\\pscp.exe  -pw " + password + " \"" + jTextField3.getText() + "\" " + username + "@" + guestIP + ":/home/mininet/");
+                        script = ("\"" + loc + "\"\\pscp.exe  -pw " + password + " \"" + jTextField3.getText() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
                         p = rt.exec(cmd + script + "\"");
                         p.waitFor();
 
@@ -396,7 +599,7 @@ public class MainGUI extends javax.swing.JFrame {
                             .getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            MainPanel mPanel = new MainPanel(guestIP, username, password, 80, 24, 500, true);
+            MainPanel mPanel = new MainPanel(guestIP.getHostAddress(), username, password, 80, 24, 500, true);
             mPanel.setExitOnClose(false);
             mPanel.setSSHPort(port);
             mPanel.setAnswerYes(false);
@@ -427,7 +630,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    //PuTTY configuration button.
+    //PuTTY configuration Button
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Runtime rt = Runtime.getRuntime();
         try {
@@ -449,9 +652,11 @@ public class MainGUI extends javax.swing.JFrame {
         int returnVal = jFileChooser1.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             jTextField3.setText(jFileChooser1.getSelectedFile().toString());
+            jButton7.setEnabled(true);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    //Topology File field
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
         if (jTextField3.getText().length() == 0) {
             jButton7.setEnabled(false);
@@ -478,9 +683,227 @@ public class MainGUI extends javax.swing.JFrame {
 
         int returnVal = jFileChooser1.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            jTextField1.setEnabled(true);
             jTextField1.setText(jFileChooser1.getSelectedFile().toString());
+            jButton4.setEnabled(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    //VM Config Button
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        JFrame tempFrame = new JFrame();
+        tempFrame.add(jPanel2);
+        tempFrame.pack();
+        tempFrame.setVisible(true);
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    //VM Config OK Button
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        if (!"".equals(jTextField5.getText())) {
+            username = jTextField5.getText();
+        } else {
+            jTextField5.setText(username);
+        }
+        if (!"".equals(jTextField6.getText())) {
+            password = jTextField6.getText();
+        } else {
+            jTextField6.setText(password);
+        }
+        if (!"".equals(jTextField7.getText())) {
+            try {
+                guestIP = (Inet4Address) InetAddress.getByName(jTextField7.getText());
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            jTextField7.setText(guestIP.getHostAddress());
+        }
+        if (!"".equals(jTextField8.getText())) {
+            setPort(Integer.parseInt(jTextField8.getText()));
+        } else {
+            jTextField8.setText(Integer.toString(getPort()));
+        }
+        if (!"".equals(jTextField9.getText())) {
+            loc = jTextField9.getText();
+        } else {
+            jTextField9.setText(loc);
+        }
+        JFrame tempFrame = (JFrame) SwingUtilities.getWindowAncestor(jPanel2);
+        tempFrame.dispose();
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    //VM Config Cancel Button
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        if (!getUsername().equals(jTextField5.getText())) {
+            jTextField5.setText(getUsername());
+        }
+        if (!getPassword().equals(jTextField6.getText())) {
+            jTextField6.setText(getPassword());
+        }
+        if (!getGuestIP().equals(jTextField7.getText())) {
+            jTextField7.setText(getGuestIP());
+        }
+        if (!Integer.toString(getPort()).equals(jTextField8.getText())) {
+            jTextField8.setText(Integer.toString(getPort()));
+        }
+        if (!getLoc().equals(jTextField9.getText())) {
+            jTextField9.setText(getLoc());
+        }
+        JFrame tempFrame = (JFrame) SwingUtilities.getWindowAncestor(jPanel2);
+        tempFrame.dispose();
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    //VeriFlow Browse Button
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        jFileChooser1 = new JFileChooser() {
+            @Override
+            public void approveSelection() {
+                if (getSelectedFile().isFile()) {
+                } else {
+                    super.approveSelection();
+                }
+            }
+        };
+
+        jFileChooser1.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        int returnVal = jFileChooser1.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            jTextField10.setEnabled(true);
+            jTextField10.setText(jFileChooser1.getSelectedFile().toString());
+            jButton13.setEnabled(true);
+        }
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+
+    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+
+    }//GEN-LAST:event_jTextField10ActionPerformed
+
+    //VeriFlow command-line field
+    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField11ActionPerformed
+
+    //Run VeriFlow Button
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
+            JOptionPane.showMessageDialog(new JFrame(),
+                    "Please select your VeriFlow topology file to transfer.",
+                    "Select VeriFlow topology",
+                    JOptionPane.PLAIN_MESSAGE);
+            final FileFilter txtFilter = new FileNameExtensionFilter("Text file", "txt");
+
+            jFileChooser1 = new JFileChooser();
+
+            jFileChooser1.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jFileChooser1.setFileFilter(txtFilter);
+
+            File topo = new File("new.txt");
+            jFileChooser1.setSelectedFile(topo);
+
+            int returnVal = jFileChooser1.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                topo = jFileChooser1.getSelectedFile();
+            } else {
+                return;
+            }
+
+            try {
+                if (jTextField10.getText().length() > 0) {
+                    script = ("\"" + loc + "\"\\pscp.exe -r -pw " + password + " \"" + jTextField10.getText() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
+                    Runtime rt = Runtime.getRuntime();
+                    Process p = rt.exec(cmd + script + "\"");
+                    p.waitFor();
+                    script = ("\"" + loc + "\"\\pscp.exe -pw " + password + " \"" + topo.getAbsolutePath() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
+                    p = rt.exec(cmd + script + "\"");
+                    p.waitFor();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "The VeriFlow field must not be empty.", "VeriFlow missing", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException | InterruptedException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        MainPanel mPanel = new MainPanel(guestIP.getHostAddress(), username, password, 80, 24, 500, true);
+        mPanel.setExitOnClose(false);
+        mPanel.setSSHPort(port);
+        mPanel.setAnswerYes(false);
+        mPanel.setX11Forwarding(true);
+        mPanel.setVisible(true);
+        if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
+
+            String command = ("sudo apt-get install dos2unix; "
+                    + "cd /home/mininet/VeriFlow"
+                    + ";"
+                    + "find . -type f -print0 | xargs -0 dos2unix");
+            command = command.concat("; cd /home/mininet/VeriFlow"
+                    + "; "
+                    + "make clean all");
+            if (jTextField11.getText().length() > 2) {
+                command = command.concat("; "
+                        + jTextField11.getText());
+            }
+            mPanel.setCommand(command);
+        } else { //if (jComboBox1.getSelectedItem().toString().equals("Mininet"))
+            if (jTextField2.getText().length() > 2) {
+                String command = ("cd " + jTextField10.getText() + "; " + jTextField11.getText());
+                mPanel.setCommand(command);
+            }
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    //VeriFlow directory field
+    private void jTextField10KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyTyped
+        if (jTextField10.getText().length() == 0) {
+            jButton13.setEnabled(false);
+            jTextField11.setEnabled(false);
+        } else {
+            jButton13.setEnabled(true);
+            jTextField11.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTextField10KeyTyped
+
+    public String getGuestIP() {
+        return guestIP.getHostAddress();
+    }
+
+    public void setGuestIP(Inet4Address guestIP) {
+        this.guestIP = guestIP;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getLoc() {
+        return loc;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
+    }
 
     /**
      * @param args the command line arguments
@@ -499,26 +922,19 @@ public class MainGUI extends javax.swing.JFrame {
 
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainGUI.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainGUI.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainGUI.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainGUI.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        frame = new MainGUI();
-        frame.setContentPane(new MainGUI().jPanel1);
+        try {
+            //</editor-fold>
+            frame = new MainGUI();
+            frame.setContentPane(new MainGUI().jPanel1);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -526,6 +942,10 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -533,20 +953,36 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

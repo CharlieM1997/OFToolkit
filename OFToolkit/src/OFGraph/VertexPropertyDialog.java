@@ -6,14 +6,11 @@
  */
 package OFGraph;
 
-import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -52,30 +49,44 @@ public class VertexPropertyDialog extends javax.swing.JDialog {
         Pattern p = Pattern.compile( "^(?:" + _255 + "\\.){3}" + _255 + "$");
         RegexFormatter ipFormatter = new RegexFormatter(p);
         ipFormattedTextField = new javax.swing.JFormattedTextField(ipFormatter);
-        try {
-            macFormattedTextField = new javax.swing.JFormattedTextField(
-                new MaskFormatter("HH:HH:HH:HH:HH:HH"));
-            jSeparator1 = new javax.swing.JSeparator();
-            jLabel3 = new javax.swing.JLabel();
-            hostFormattedTextField = new javax.swing.JFormattedTextField(new String());
+        macFormattedTextField = new javax.swing.JFormattedTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        hostFormattedTextField = new javax.swing.JFormattedTextField(new String());
 
-            setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-            setTitle("Edge Properties");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Edge Properties");
 
-            jButton1.setText("OK");
-            jButton1.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    okButtonHandler(evt);
-                }
-            });
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonHandler(evt);
+            }
+        });
 
-            jLabel1.setText("IP Address:");
+        jLabel1.setText("IP Address:");
 
-            jLabel2.setText("MAC Address:");
-
+        jLabel2.setText("MAC Address:");
+        if (vertex.getType().equals("Switch")) {
+            jLabel2.setText("DPID:");
         }
-        catch (ParseException e) {
-            e.printStackTrace();
+
+        if (vertex.getType().equals("Host")) {
+            try {
+                macFormattedTextField = new javax.swing.JFormattedTextField(
+                    new MaskFormatter("HH:HH:HH:HH:HH:HH"));
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else { //if (vertex.getType().equals("Switch")
+            try {
+                macFormattedTextField = new javax.swing.JFormattedTextField(
+                    new MaskFormatter("HH:HH:HH:HH:HH:HH:HH:HH"));
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         jLabel3.setText("Rename " + vertex.getType() + ": ");
@@ -85,7 +96,12 @@ public class VertexPropertyDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jLabel3)
+                        .add(18, 18, 18)
+                        .add(hostFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .addContainerGap()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -95,17 +111,12 @@ public class VertexPropertyDialog extends javax.swing.JDialog {
                                     .add(jLabel1)
                                     .add(jLabel2))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(ipFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 69, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, macFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 69, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(macFormattedTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                                    .add(ipFormattedTextField)))))
                     .add(layout.createSequentialGroup()
                         .add(52, 52, 52)
-                        .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jLabel3)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(hostFormattedTextField)))
+                        .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

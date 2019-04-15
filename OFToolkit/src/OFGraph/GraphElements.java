@@ -10,6 +10,8 @@ package OFGraph;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.apache.commons.collections15.Factory;
 
 /**
@@ -132,6 +134,20 @@ public class GraphElements {
             if (tpGraph.getTypeHost().isSelected()) {
                 String name = "h" + hostCount++;
                 v = new MyVertex(name, iconNames[0]);
+                String hex = Integer.toHexString(hostCount);
+                if (hex.length() == 1) {
+                    hex = "0" + hex;
+                }
+                if (hostCount < 256) {
+                    v.setMAC("00:00:00:00:00:" + hex);
+                }
+                else if (hostCount < 65536) {
+                    v.setMAC("00:00:00:00:" + hex.substring(0,1) + ":" + hex.substring(2,3));
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JFrame(), "You have reached 65536 hosts in this graph. You cannot create any more hosts.", "Host limit reached", JOptionPane.ERROR_MESSAGE);
+                    return null;
+                }
             }
             else { //if (tpGraph.getTypeSwitch().isSelected())
                 String name = "s" + switchCount++;

@@ -11,11 +11,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -252,7 +250,7 @@ public class ControllerSetup extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2)))
         );
@@ -274,14 +272,15 @@ public class ControllerSetup extends javax.swing.JDialog {
         }
         setcType(jComboBox1.getSelectedItem().toString());
         setProtocol(jComboBox2.getSelectedItem().toString());
-        try {
-            if (!"".equals(jTextField7.getText())) {
+
+        if (!"".equals(jTextField7.getText())) {
+            try {
                 ControllerSetup.IP = (Inet4Address) InetAddress.getByName(jTextField7.getText());
-            } else {
-                jTextField7.setText(ControllerSetup.IP.getHostAddress());
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(ControllerSetup.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(ControllerSetup.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            jTextField7.setText(ControllerSetup.IP.getHostAddress());
         }
         if (model != null) {
             model = (DefaultTableModel) jTable1.getModel();
@@ -401,7 +400,7 @@ public class ControllerSetup extends javax.swing.JDialog {
     }
 
     public static String getcType() {
-        return cType.replaceAll("\\s+","");
+        return cType.replaceAll("\\s+", "");
     }
 
     public static void setcType(String cType) {
@@ -419,7 +418,7 @@ public class ControllerSetup extends javax.swing.JDialog {
     public static int getPort() {
         return port;
     }
-    
+
     public static String getPortString() {
         return Integer.toString(port);
     }
@@ -431,7 +430,7 @@ public class ControllerSetup extends javax.swing.JDialog {
     public static Inet4Address getIP() {
         return IP;
     }
-    
+
     public static String getIPAddress() {
         return IP.getHostAddress();
     }
@@ -443,8 +442,7 @@ public class ControllerSetup extends javax.swing.JDialog {
     public static void setModel(DefaultTableModel model) {
         ControllerSetup.model = model;
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

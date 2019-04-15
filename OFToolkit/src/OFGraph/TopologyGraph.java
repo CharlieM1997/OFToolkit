@@ -45,11 +45,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Transformer;
 
 /**
@@ -150,6 +152,8 @@ public class TopologyGraph extends javax.swing.JFrame {
         JMenu saveMenu = new JMenu("Save Graph");
         JMenuItem saveAs = new JMenuItem(new SaveAction(g));
         saveMenu.add(saveAs);
+        JMenuItem asVeriFlow = new JMenuItem(new VeriFlowAction(g));
+        saveMenu.add(asVeriFlow);
         menuBar.add(saveMenu);
 
         JMenu modeMenu = gm.getModeMenu();
@@ -188,11 +192,14 @@ public class TopologyGraph extends javax.swing.JFrame {
         });
     }
 
-    Transformer<GraphElements.MyVertex, Paint> vertexColor = (GraphElements.MyVertex v) -> {
-        if (v.getType().equals("Host")) {
-            return new Color(0, 0, 0, 0);
-        } //else if v.getType().equals("Switch));
-        return Color.CYAN;
+    Transformer<GraphElements.MyVertex, Paint> vertexColor = new Transformer<MyVertex, Paint>() {
+        @Override
+        public Paint transform(GraphElements.MyVertex v) {
+            if (v.getType().equals("Host")) {
+                return new Color(0, 0, 0, 0);
+            } //else if v.getType().equals("Switch));
+            return Color.CYAN;
+        }
     };
 
     /**
@@ -209,6 +216,7 @@ public class TopologyGraph extends javax.swing.JFrame {
      * ImageIcon(TopologyGraph.class.getResource("/OFGraph/images/switch.png"));
      * }
      *
+     * @param <V>
      * @Override public void setIconMap(Map iconMap) { this.imgIconMap =
      * iconMap; } }
      */
@@ -369,7 +377,7 @@ public class TopologyGraph extends javax.swing.JFrame {
                                     + "'");
                         }
                         if (v.getMAC() != null) {
-                            script = script.concat(", mac='"
+                            script = script.concat(", dpid='"
                                     + v.getMAC()
                                     + "'");
                         }
@@ -400,49 +408,47 @@ public class TopologyGraph extends javax.swing.JFrame {
                         + "\tnet = Mininet( topo="
                         + name
                         + " )\n\n\tinfo ( '*** Adding controller\\n' )\n\t"
-                        );
+                );
                 if (ControllerSetup.getSetup() == null) {
                     script = script.concat("c0=net.addController(name='c0',"
-                    + "\n\t\tcontroller=RemoteController,"
-                    + "\n\t\tip='127.0.0.1',"
-                    + "\n\t\tprotocol='tcp',"
-                    + "\n\t\tport=6633)\n\t"
+                            + "\n\t\tcontroller=RemoteController,"
+                            + "\n\t\tip='127.0.0.1',"
+                            + "\n\t\tprotocol='tcp',"
+                            + "\n\t\tport=6633)\n\t"
                     );
-                }
-                else {
+                } else {
                     cSetup = ControllerSetup.getSetup();
-                   script = script.concat(cSetup.getcName()
-                   + "=net.addController(name='" + cSetup.getcName()
-                   + "',\n\t\t"
-                   + "controller=" + cSetup.getcType()
-                   + ",\n\t\t"
-                   + "ip='" + cSetup.getIPAddress()
-                   + "',\n\t\t"
-                   + "protocol='" + cSetup.getProtocol()
-                   + "',\n\t\t"
-                   + "port=" + cSetup.getPortString()
-                   + ")\n\tcmap = { ");
-                   DefaultTableModel model = cSetup.getModel();
-                   boolean one = false;
-                   for (int i = 0; i < model.getRowCount(); i++) {
-                       if ((boolean) model.getValueAt(i, 1) == true) {
-                           one = true;
-                           script = script.concat("' "
-                                   + model.getValueAt(i, 0).toString()
-                           + "': " + cSetup.getcName() + ", ");
-                       }
-                   }
-                   if (one = false) {
-                       script = script.substring(0, script.length() - 9);
-                   }
-                   else {
-                       script = script.substring(0, script.length() - 2);
-                       script = script.concat(" }\n\t");
-                   }
+                    script = script.concat(cSetup.getcName()
+                            + "=net.addController(name='" + cSetup.getcName()
+                            + "',\n\t\t"
+                            + "controller=" + cSetup.getcType()
+                            + ",\n\t\t"
+                            + "ip='" + cSetup.getIPAddress()
+                            + "',\n\t\t"
+                            + "protocol='" + cSetup.getProtocol()
+                            + "',\n\t\t"
+                            + "port=" + cSetup.getPortString()
+                            + ")\n\tcmap = { ");
+                    DefaultTableModel model = cSetup.getModel();
+                    boolean one = false;
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        if ((boolean) model.getValueAt(i, 1) == true) {
+                            one = true;
+                            script = script.concat("'"
+                                    + model.getValueAt(i, 0).toString()
+                                    + "': " + cSetup.getcName() + ", ");
+                        }
+                    }
+                    if (one == false) {
+                        script = script.substring(0, script.length() - 9);
+                    } else {
+                        script = script.substring(0, script.length() - 2);
+                        script = script.concat(" }\n\t");
+                    }
                 }
                 script = script.concat("net.start()"
-                + "\n\tCLI( net )"
-                + "\n\tnet.stop()");
+                        + "\n\tCLI( net )"
+                        + "\n\tnet.stop()");
 
                 try {
                     try (PrintStream out = new PrintStream(new FileOutputStream(fileChooser.getSelectedFile()))) {
@@ -451,6 +457,128 @@ public class TopologyGraph extends javax.swing.JFrame {
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(TopologyGraph.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        }
+    }
+
+    public class VeriFlowAction extends AbstractAction {
+
+        private final Graph g;
+
+        public VeriFlowAction(Graph g) {
+            super("VeriFlow Topology...");
+
+            this.g = g;
+        }
+
+        Boolean parseBoolean(String s) {
+            return ("1".equals(s) ? Boolean.TRUE : ("0".equals(s) ? Boolean.FALSE : null));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final FileFilter pyFilter = new FileNameExtensionFilter("Text file", "txt");
+
+            JFileChooser fileChooser = new JFileChooser();
+
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.setFileFilter(pyFilter);
+            String name = "new";
+            File output = new File(name + ".txt");
+            fileChooser.setSelectedFile(output);
+            String script = "";
+            if (fileChooser.showSaveDialog(tpGraph) == JFileChooser.APPROVE_OPTION) {
+                Collection<GraphElements.MyVertex> vertices = g.getVertices();
+                int id = 0;
+
+                for (GraphElements.MyVertex v : vertices) {
+                    if (v.getIPtoString() == null || v.getMAC() == null) {
+                        JOptionPane.showMessageDialog(new JFrame(), "All hosts and switches must have IP and DPIDs/MAC addresses set in order to save the graph as a VeriFlow topology.", "IP/DPID/MAC not set", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (v.getType().equals("Switch")
+                            && v.getIPtoString() != null
+                            && g.outDegree(v) != 0) {
+                        int linkCount = 0;
+                        int linksLeft = g.outDegree(v);
+                        script = script.concat(++id + " " + v.getIPtoString()
+                                + " " + linkCount++ + " " + linkCount++);
+
+                        Collection<GraphElements.MyEdge> vLinks = g.getOutEdges(v);
+                        for (GraphElements.MyEdge l : vLinks) {
+                            System.out.println(linksLeft);
+                            --linksLeft;
+                            GraphElements.MyVertex vOpposite = (GraphElements.MyVertex) g.getOpposite(v, l);
+                            script = script.concat(" " + vOpposite.getIPtoString());
+                            if (linksLeft == 0) {
+                                script = script.concat("\r\n");
+                                break;
+                            } else {
+                                script = script.concat(" " + linkCount++);
+                            }
+                        }
+                    }
+                }
+
+                for (GraphElements.MyVertex v : vertices) {
+                    if (v.getType().equals("Host")
+                            && v.getIPtoString() != null
+                            && (g.outDegree(v) != 0 && g.inDegree(v) != 0)) {
+                        int link = 1;
+                        script = script.concat(++id + " " + v.getIPtoString()
+                                + " " + link-- + " " + link);
+
+                        Collection<GraphElements.MyEdge> vLinks = CollectionUtils.union(
+                                g.getOutEdges(v), g.getInEdges(v));
+                        for (GraphElements.MyEdge l : vLinks) {
+                            GraphElements.MyVertex vOpposite = (GraphElements.MyVertex) g.getOpposite(v, l);
+                            if (vOpposite.getType().equals("Switch")) {
+                                script = script.concat(" " + vOpposite.getIPtoString() + "\r\n");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            try {
+                try (PrintStream out = new PrintStream(new FileOutputStream(fileChooser.getSelectedFile()))) {
+                    out.print(script);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(TopologyGraph.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            JOptionPane.showMessageDialog(new JFrame(), 
+                    "To ensure VeriFlow works with your topology, please save arp.txt inside your VeriFlow folder.",
+                    "Save arp.txt to VeriFlow",
+                    JOptionPane.PLAIN_MESSAGE);
+
+            name = "arp";
+            output = new File(name + ".txt");
+            fileChooser.setSelectedFile(output);
+            script = "";
+
+            if (fileChooser.showSaveDialog(tpGraph) == JFileChooser.APPROVE_OPTION) {
+                Collection<GraphElements.MyVertex> vertices = g.getVertices();
+
+                for (GraphElements.MyVertex v : vertices) {
+                    script = script.concat(v.getIPtoString() + "\r\n");
+                    String mac;
+                    if (v.getType().equals("Switch")) {
+                        mac = v.getMAC().substring(6);
+                    } else {
+                        mac = v.getMAC();
+                    }
+                    script = script.concat(mac + "\r\n");
+                }
+            }
+            try {
+                try (PrintStream out = new PrintStream(new FileOutputStream(fileChooser.getSelectedFile()))) {
+                    out.print(script);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(TopologyGraph.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
