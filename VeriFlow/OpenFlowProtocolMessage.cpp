@@ -559,7 +559,7 @@ void OpenFlowProtocolMessage::processMatch(const ofp_match* match, ProxyConnecti
 
     printf("ip  :  %d    mac:  %ld\n", temp.ip, temp.mac);
     int flag = 0;
-    if (temp.ip == 0) //for network initialisation
+    if (temp.ip == 0 && temp.mac == 0) //for network initialisation
     {
         flag = 1;
     } else
