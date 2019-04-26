@@ -1,6 +1,6 @@
 # OpenFlow Toolkit
 
-## Version 1.1
+## Version 1.2
 
 Current features:
 * Transfer an OpenFlow controller and/or a Mininet topology from a local machine to a VM
@@ -11,5 +11,5 @@ Current features:
 * VeriFlow support - Save topology as a VeriFlow topology, transfer VeriFlow to a VM and execute in a terminal
 
 To-do:
-* Clean code & add comments
+
 * Add setup guide & tutorial
