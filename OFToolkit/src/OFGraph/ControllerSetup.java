@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * This class sets up the controller configuration window in the topology graph.
  * @author 164776
  */
 public class ControllerSetup extends javax.swing.JDialog {
@@ -34,8 +34,11 @@ public class ControllerSetup extends javax.swing.JDialog {
     }
 
     /**
-     * Creates new form ControllerSetup
+     * Creates new form ControllerSetup and populates with initial values.
      *
+     * @param parent The parent frame
+     * @param modal If true (and already initialised), skip field population
+     * @param g The graph.
      * @throws java.net.UnknownHostException
      */
     public ControllerSetup(java.awt.Frame parent, boolean modal, Graph g) throws UnknownHostException {
@@ -60,6 +63,11 @@ public class ControllerSetup extends javax.swing.JDialog {
         initComponents();
     }
 
+    /**
+     * Updates the menu's table of switches that are in the graph. The table
+     * keeps track of which switches are or are not connected to the controller.
+     * @param g The topology's graph.
+     */
     public void updateTable(Graph g) {
         ControllerSetup.g = g;
         Collection<GraphElements.MyVertex> vertices = g.getVertices();
@@ -70,12 +78,15 @@ public class ControllerSetup extends javax.swing.JDialog {
         }).forEachOrdered((v) -> {
             switches.add(v);
         });
+        
         model = (DefaultTableModel) jTable1.getModel();
+        
         switches.forEach((GraphElements.MyVertex s) -> {
             outerloop:
             if (s.getType().equals("Switch")) {
                 for (int i = 0; i < model.getRowCount(); i++) {
                     if (s.getName().equals(model.getValueAt(i, 0))) {
+                        //if the switch is already in the table, break
                         break outerloop;
                     }
                 }
@@ -258,7 +269,7 @@ public class ControllerSetup extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //OK button
+    //OK Button. Replaces the existing field values with the user's new values
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!"".equals(jTextField1.getText())) {
             setcName(jTextField1.getText());
@@ -288,7 +299,7 @@ public class ControllerSetup extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    //Cancel button
+    //Cancel button. Resets the field values to their old values.
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!getcName().equals(jTextField1.getText())) {
             jTextField1.setText(getcName());
@@ -330,6 +341,7 @@ public class ControllerSetup extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    //Same as the cancel button, except if closing with the top right X button.
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (!getcName().equals(jTextField1.getText())) {
             jTextField1.setText(getcName());
@@ -371,6 +383,13 @@ public class ControllerSetup extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Sets up the controller window, dependant on if it has already been
+     * initialised or not.
+     * @param g The graph.
+     * @return The instance of the window.
+     * @throws UnknownHostException
+     */
     public static ControllerSetup setup(Graph g) throws UnknownHostException {
         if (instance != null) {
             instance.updateTable(g);
@@ -382,6 +401,10 @@ public class ControllerSetup extends javax.swing.JDialog {
         return instance;
     }
 
+    /**
+     * Gets the controller setup window.
+     * @return The controller setup window if initialised, else null.
+     */
     public static ControllerSetup getSetup() {
         try {
             return instance;

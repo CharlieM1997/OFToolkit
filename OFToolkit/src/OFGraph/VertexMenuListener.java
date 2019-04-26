@@ -15,7 +15,8 @@ import edu.uci.ics.jung.visualization.VisualizationViewer;
  * Used to indicate that this class wishes to be told of a selected vertex
  * along with its visualization component context. Note that the VisualizationViewer
  * has full access to the graph and layout.
- * @author Dr. Greg M. Bernstein
+ * @author Dr. Greg M. Bernstein, modified by 164776
+ * @param <V> A given vertex.
  */
 public interface VertexMenuListener<V> {
     void setVertexAndView(V v, VisualizationViewer visView);    

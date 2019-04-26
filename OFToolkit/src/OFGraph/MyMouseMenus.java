@@ -32,12 +32,12 @@ public class MyMouseMenus {
         public EdgeMenu(final JFrame frame) {
             super("Edge Menu");
             // this.frame = frame;
-            this.add(new DeleteEdgeMenuItem<GraphElements.MyEdge>());        
+            this.add(new DeleteLinkMenu<GraphElements.MyEdge>());        
         }
         
     }
     
-    public static class EdgePropItem extends JMenuItem implements EdgeMenuListener<OFGraph.GraphElements.MyEdge>,
+    public static class EdgePropItem extends JMenuItem implements LinkMenuListener<OFGraph.GraphElements.MyEdge>,
             MenuPointListener {
         GraphElements.MyEdge edge;
         VisualizationViewer visComp;
@@ -60,7 +60,7 @@ public class MyMouseMenus {
             super("Vertex Menu");
             this.add(new VertexPropItem(frame));
             this.addSeparator();
-            this.add(new DeleteVertexMenuItem<GraphElements.MyVertex>());
+            this.add(new DeleteVertexMenu<GraphElements.MyVertex>());
         }
     }
     

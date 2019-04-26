@@ -55,7 +55,10 @@ import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Transformer;
 
 /**
- *
+ * The topology graph class. This class opens a JFrame and displays an
+ * interactive graph, where the user can create and modify hosts, switches and
+ * links as well as customise the controller. Then, the user can save their
+ * graph as a Mininet and/or VeriFlow topology file.
  * @author 164776
  */
 public class TopologyGraph extends javax.swing.JFrame {
@@ -71,6 +74,12 @@ public class TopologyGraph extends javax.swing.JFrame {
         setup();
     }
 
+    /**
+     * Creates a new instance of the topology graph class, or returns the
+     * existing instance.
+     * @param parent The MainGUI JFrame parent.
+     * @return An instance of this class.
+     */
     public static TopologyGraph openSharedGraph(JFrame parent) {
         if (tpGraph == null) {
             tpGraph = new TopologyGraph(parent);
@@ -80,6 +89,10 @@ public class TopologyGraph extends javax.swing.JFrame {
         return tpGraph;
     }
 
+    /**
+     * Gets the instance of this graph.
+     * @return The topology graph instance, or null if not initialised yet.
+     */
     public static TopologyGraph getSharedGraph() {
         try {
             return tpGraph;
@@ -124,13 +137,13 @@ public class TopologyGraph extends javax.swing.JFrame {
         //vv.getRenderContext().setVertexIconTransformer(iconTransformer);
         vv.getRenderer().setVertexRenderer(new BasicVertexRenderer<>());
 
-        // Create a graph mouse and add it to the visualization viewer
+        // Create a graph mouse and add it to the visualization viewer.
         EditingModalGraphMouse gm = new EditingModalGraphMouse(vv.getRenderContext(),
                 GraphElements.MyVertexFactory.getInstance(),
                 GraphElements.MyEdgeFactory.getInstance());
-        // Trying out our new popup menu mouse plugin...
-        PopupVertexEdgeMenuMousePlugin myPlugin = new PopupVertexEdgeMenuMousePlugin();
-        // Add some popup menus for the edges and vertices to our mouse plugin.
+        // Creating a menu mouse plugin.
+        MenuMousePlugin myPlugin = new MenuMousePlugin();
+        // Add popup menus for the edges and vertices to the mouse plugin.
         JPopupMenu edgeMenu = new MyMouseMenus.EdgeMenu(this);
         JPopupMenu vertexMenu = new MyMouseMenus.VertexMenu(this);
         myPlugin.setEdgePopup(edgeMenu);
@@ -145,10 +158,11 @@ public class TopologyGraph extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.getContentPane().add(vv);
 
-        // Let's add a menu for changing mouse modes
+        //Menu for changing mouse modes
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
+        //Menu to save the graph as a Mininet or VeriFlow topology
         JMenu saveMenu = new JMenu("Save Graph");
         JMenuItem saveAs = new JMenuItem(new SaveAction(g));
         saveMenu.add(saveAs);
@@ -162,6 +176,7 @@ public class TopologyGraph extends javax.swing.JFrame {
         modeMenu.setPreferredSize(new Dimension(80, 20)); // Change the size so I can see the text
         menuBar.add(modeMenu);
 
+        //Menu to change the vertex type between host and switch
         JMenu typeMenu = new JMenu("Vertex Type");
         ButtonGroup types = new ButtonGroup();
         this.typeHost = new JRadioButtonMenuItem("Host");
@@ -175,6 +190,7 @@ public class TopologyGraph extends javax.swing.JFrame {
         typeMenu.add(typeSwitch);
         menuBar.add(typeMenu);
 
+        //Menu to setup the controller
         JMenu controllerMenu = new JMenu("Controller Setup");
         JMenuItem controller = new JMenuItem(new ControllerAction(g));
         controllerMenu.add(controller);
@@ -192,6 +208,10 @@ public class TopologyGraph extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Sets the colour of the next vertex the user can add.
+     * @return Transparent if host, cyan if switch.
+     */
     Transformer<GraphElements.MyVertex, Paint> vertexColor = new Transformer<MyVertex, Paint>() {
         @Override
         public Paint transform(GraphElements.MyVertex v) {
@@ -216,9 +236,14 @@ public class TopologyGraph extends javax.swing.JFrame {
      * ImageIcon(TopologyGraph.class.getResource("/OFGraph/images/switch.png"));
      * }
      *
-     * @param <V>
+     * 
      * @Override public void setIconMap(Map iconMap) { this.imgIconMap =
      * iconMap; } }
+     */
+    
+    /**
+     * JUNG Icon Shape Transformer.
+     * @param V A given vertex.
      */
     public class IconShapeTransformer<V> extends EllipseVertexShapeTransformer<V> {
 
@@ -259,6 +284,12 @@ public class TopologyGraph extends javax.swing.JFrame {
             return myTransform((MyVertex) v);
         }
 
+        /**
+         * Applies the appropriate image to the appropriate vertex type to be
+         * displayed on the visual graph.
+         * @param v A given vertex.
+         * @return The transformed vertex.
+         */
         public Shape myTransform(GraphElements.MyVertex v) {
             Icon icon = iconMap.get(v.getIconNum());
             if (icon instanceof ImageIcon) {
@@ -299,6 +330,9 @@ public class TopologyGraph extends javax.swing.JFrame {
         return typeSwitch;
     }
 
+    /**
+     * Save the graph as a Mininet topology.
+     */
     public class SaveAction extends AbstractAction {
 
         private final Graph g;
@@ -309,6 +343,10 @@ public class TopologyGraph extends javax.swing.JFrame {
             this.g = g;
         }
 
+        /**
+         * The save action. Detailed comments in-line.
+         * @param e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             final FileFilter pyFilter = new FileNameExtensionFilter("Python file", "py");
@@ -325,6 +363,8 @@ public class TopologyGraph extends javax.swing.JFrame {
                 Collection<GraphElements.MyVertex> vertices = g.getVertices();
                 Collection<GraphElements.MyEdge> links = g.getEdges();
 
+                //The script string parses the graph and the user's choices into
+                //a Mininet topology written in Python.
                 String script = "from mininet.net import Mininet\n"
                         + "from mininet.topo import Topo\n"
                         + "from mininet.node import Controller, RemoteController, OVSController\n"
@@ -341,6 +381,7 @@ public class TopologyGraph extends javax.swing.JFrame {
                         + "\t\tTopo.__init__( self )\n"
                         + "\t\t# Add hosts";
 
+                //Adds the hosts to the file
                 for (GraphElements.MyVertex v : vertices) {
                     if (v.getType().equals("Host")) {
                         script = script.concat("\n\t\t"
@@ -364,6 +405,7 @@ public class TopologyGraph extends javax.swing.JFrame {
 
                 script = script.concat("\n\n\t\t# Add switches");
 
+                //Adds the switches to the file
                 for (GraphElements.MyVertex v : vertices) {
                     if (v.getType().equals("Switch")) {
                         script = script.concat("\n\t\t"
@@ -387,6 +429,7 @@ public class TopologyGraph extends javax.swing.JFrame {
 
                 script = script.concat("\n\n\t\t# Add links");
 
+                //Adds the links to the file
                 for (GraphElements.MyEdge l : links) {
                     Pair<GraphElements.MyVertex> pair = g.getEndpoints(l);
                     script = script.concat("\n\t\t"
@@ -409,6 +452,9 @@ public class TopologyGraph extends javax.swing.JFrame {
                         + name
                         + " )\n\n\tinfo ( '*** Adding controller\\n' )\n\t"
                 );
+                //If the controller menu was never opened in the graph, add a
+                //controller with default values. Otherwise, get the values from
+                //the controller setup instance.
                 if (ControllerSetup.getSetup() == null) {
                     script = script.concat("c0=net.addController(name='c0',"
                             + "\n\t\tcontroller=RemoteController,"
@@ -431,6 +477,9 @@ public class TopologyGraph extends javax.swing.JFrame {
                             + ")\n\tcmap = { ");
                     DefaultTableModel model = cSetup.getModel();
                     boolean one = false;
+                    //If at least one switch is linked to the controller, parse
+                    //the switches and links into the file. Otherwise, backtrack
+                    //in the file.
                     for (int i = 0; i < model.getRowCount(); i++) {
                         if ((boolean) model.getValueAt(i, 1) == true) {
                             one = true;
@@ -461,6 +510,9 @@ public class TopologyGraph extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Saves the graph as a VeriFlow topology.
+     */
     public class VeriFlowAction extends AbstractAction {
 
         private final Graph g;
@@ -471,10 +523,14 @@ public class TopologyGraph extends javax.swing.JFrame {
             this.g = g;
         }
 
-        Boolean parseBoolean(String s) {
-            return ("1".equals(s) ? Boolean.TRUE : ("0".equals(s) ? Boolean.FALSE : null));
-        }
+        //Boolean parseBoolean(String s) {
+        //    return ("1".equals(s) ? Boolean.TRUE : ("0".equals(s) ? Boolean.FALSE : null));
+        //}
 
+        /**
+         * The save action. Detailed comments in-line.
+         * @param e
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             final FileFilter pyFilter = new FileNameExtensionFilter("Text file", "txt");
@@ -492,10 +548,12 @@ public class TopologyGraph extends javax.swing.JFrame {
                 int id = 0;
 
                 for (GraphElements.MyVertex v : vertices) {
+                    //Don't save if a vertex doesn't have IP or MAC set
                     if (v.getIPtoString() == null || v.getMAC() == null) {
                         JOptionPane.showMessageDialog(new JFrame(), "All hosts and switches must have IP and DPIDs/MAC addresses set in order to save the graph as a VeriFlow topology.", "IP/DPID/MAC not set", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
+                    //If switch and has IP and has at least one link
                     if (v.getType().equals("Switch")
                             && v.getIPtoString() != null
                             && g.outDegree(v) != 0) {
@@ -505,12 +563,14 @@ public class TopologyGraph extends javax.swing.JFrame {
                                 + " " + linkCount++ + " " + linkCount++);
 
                         Collection<GraphElements.MyEdge> vLinks = g.getOutEdges(v);
+                        //print each link
                         for (GraphElements.MyEdge l : vLinks) {
                             System.out.println(linksLeft);
                             --linksLeft;
                             GraphElements.MyVertex vOpposite = (GraphElements.MyVertex) g.getOpposite(v, l);
                             script = script.concat(" " + vOpposite.getIPtoString());
                             if (linksLeft == 0) {
+                                //break when out of links
                                 script = script.concat("\r\n");
                                 break;
                             } else {
@@ -520,6 +580,7 @@ public class TopologyGraph extends javax.swing.JFrame {
                     }
                 }
 
+                //Same as Switch block but for Hosts. Only prints link to Switch
                 for (GraphElements.MyVertex v : vertices) {
                     if (v.getType().equals("Host")
                             && v.getIPtoString() != null
@@ -549,6 +610,7 @@ public class TopologyGraph extends javax.swing.JFrame {
                 Logger.getLogger(TopologyGraph.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            //VeriFlow requires an ARP cache of the topology
             JOptionPane.showMessageDialog(new JFrame(), 
                     "To ensure VeriFlow works with your topology, please save arp.txt inside your VeriFlow folder.",
                     "Save arp.txt to VeriFlow",
@@ -583,6 +645,9 @@ public class TopologyGraph extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Launches the Controller Setup menu.
+     */
     public class ControllerAction extends AbstractAction {
 
         private final Graph g;

@@ -9,9 +9,12 @@ import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
 import javax.swing.text.DefaultFormatter;
 
+/**
+ * Used to format regular expressions within the program.
+ * @author 164776
+ */
 public class RegexFormatter extends DefaultFormatter {
     private Pattern pattern;
     private Matcher matcher;
@@ -30,7 +33,7 @@ public class RegexFormatter extends DefaultFormatter {
         setPattern(pattern);
     }
 
-    public void setPattern(Pattern pattern) {
+    private void setPattern(Pattern pattern) {
         this.pattern = pattern;
     }
 
@@ -46,14 +49,21 @@ public class RegexFormatter extends DefaultFormatter {
         return matcher;
     }
 
+    /**
+     * Parses given text with the rules of the matcher.
+     * @param text The given text.
+     * @return The parsed text.
+     * @throws ParseException 
+     */
+    @Override
     public Object stringToValue(String text) throws ParseException {
-        Pattern pattern = getPattern();
+        Pattern pt = getPattern();
 
-        if (pattern != null) {
-            Matcher matcher = pattern.matcher(text);
+        if (pt != null) {
+            Matcher mtchr = pt.matcher(text);
 
-            if (matcher.matches()) {
-                setMatcher(matcher);
+            if (mtchr.matches()) {
+                setMatcher(mtchr);
                 return super.stringToValue(text);
             }
             throw new ParseException("Pattern did not match", 0);

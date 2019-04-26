@@ -10,17 +10,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenuItem;
 
 /**
- * A class to implement the deletion of a vertex from within a 
- * PopupVertexEdgeMenuMousePlugin.
+ * A class to implement the deletion of a vertex from within a MenuMousePlugin.
  * @author Dr. Greg M. Bernstein, modified by 164776
  * @param <V> A given vertex.
  */
-public class DeleteVertexMenuItem<V> extends JMenuItem implements VertexMenuListener<V> {
+public class DeleteVertexMenu<V> extends JMenuItem implements VertexMenuListener<V> {
     private V vertex;
     private VisualizationViewer vViewer;
     
     /** Creates a new instance of DeleteVertexMenuItem */
-    public DeleteVertexMenuItem() {
+    public DeleteVertexMenu() {
         super("Delete Vertex");
         initComponents();
     }
@@ -35,8 +34,8 @@ public class DeleteVertexMenuItem<V> extends JMenuItem implements VertexMenuList
 
     /**
      * Implements the VertexMenuListener interface.
-     * @param v The given Vertex.
-     * @param vViewer The visualization viewer.
+     * @param v A given vertex.
+     * @param vViewer A visualization viewer.
      */
     @Override
     public void setVertexAndView(V v, VisualizationViewer vViewer) {

@@ -1,10 +1,7 @@
 /*
- * GraphElements.java
- *
- * Created on March 21, 2007, 9:57 AM
- *
- * Copyright March 21, 2007 Grotto Networking
- *
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package OFGraph;
 
@@ -15,8 +12,9 @@ import javax.swing.JOptionPane;
 import org.apache.commons.collections15.Factory;
 
 /**
- *
- * @author Dr. Greg M. Bernstein
+ * Class that adds functionality to the topology graph, e.g. creating vertices
+ * and edges.
+ * @author Dr. Greg M. Bernstein, modified by 164776
  */
 public class GraphElements {
 
@@ -26,6 +24,10 @@ public class GraphElements {
     public GraphElements() {
     }
 
+    /**
+     * Vertex class. Creates a vertex and gives its name, type (Host or Switch),
+     * IP and MAC addresses.
+     */
     public static class MyVertex {
 
         private String name;
@@ -50,6 +52,10 @@ public class GraphElements {
             return vertexIP;
         }
 
+        /**
+         * Returns the Vertex's IP address as a string.
+         * @return The Vertex's IP, or null if it does not have one.
+         */
         public String getIPtoString() {
             try {
                 return vertexIP.getHostAddress();
@@ -79,6 +85,10 @@ public class GraphElements {
             return type;
         }
 
+        /**
+         * Used to get the respective image of the Vertex's type for the graph.
+         * @return 0 if host, 1 if switch.
+         */
         public Number getIconNum() {
             if ("Host".equals(this.getType())) {
                 return 0;
@@ -87,6 +97,11 @@ public class GraphElements {
         }
     }
 
+    /**
+     * The edge class. Edges are also referred to as links interchangeably in
+     * the documentation, as edges are the general term and links are the
+     * networking term.
+     */
     public static class MyEdge {
 
         private String name;
@@ -109,7 +124,9 @@ public class GraphElements {
         }
     }
 
-    // Single factory for creating Vertices...
+    /**
+     * Factory to create vertices.
+     */
     public static class MyVertexFactory implements Factory<MyVertex> {
 
         private static int hostCount = 1;
@@ -127,6 +144,12 @@ public class GraphElements {
             return instance;
         }
 
+        /**
+         * Creates a vertex, populates its fields and sends it to the graph.
+         * Increments the host or switch count depending on its value, and
+         * automatically assigns IP and MAC addresses based on its number.
+         * @return The given vertex.
+         */
         @Override
         public GraphElements.MyVertex create() {
             TopologyGraph tpGraph = TopologyGraph.getSharedGraph();
@@ -136,6 +159,7 @@ public class GraphElements {
                 v = new MyVertex(name, iconNames[0]);
                 String hex = Integer.toHexString(hostCount);
                 if (hex.length() == 1) {
+                    //if the host count is at 9 or less, adds a preceding 0.
                     hex = "0" + hex;
                 }
                 if (hostCount < 256) {
@@ -158,7 +182,9 @@ public class GraphElements {
 
     }
 
-    // Singleton factory for creating Edges...
+    /**
+     * Factory for creating edges.
+     */
     public static class MyEdgeFactory implements Factory<MyEdge> {
 
         private static int linkCount = 1;

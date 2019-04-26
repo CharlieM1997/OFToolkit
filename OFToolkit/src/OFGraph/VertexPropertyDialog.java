@@ -1,8 +1,7 @@
 /*
- * EdgePropertyDialog.java
- *
- * Created on March 22, 2007, 2:23 PM
- * Copyright 2007 Grotto Networking
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package OFGraph;
 
@@ -15,14 +14,16 @@ import javax.swing.text.MaskFormatter;
 
 /**
  *
- * @author Greg
+ * @author Dr. Greg M. Bernstein, modified by 164776
  */
 public class VertexPropertyDialog extends javax.swing.JDialog {
 
     GraphElements.MyVertex vertex;
 
     /**
-     * Creates new form EdgePropertyDialog
+     * Creates new form VertexPropertyDialog
+     * @param parent The parent JFrame.
+     * @param vertex A given vertex.
      */
     public VertexPropertyDialog(java.awt.Frame parent, GraphElements.MyVertex vertex) {
         super(parent, true);

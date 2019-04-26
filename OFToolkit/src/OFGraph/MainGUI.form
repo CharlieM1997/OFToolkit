@@ -430,7 +430,7 @@
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;Run Script&quot;" type="code"/>
+              <Connection code="&quot;Run Controller&quot;" type="code"/>
             </Property>
           </Properties>
           <Events>

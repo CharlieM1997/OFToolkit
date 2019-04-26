@@ -17,13 +17,26 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 /**
- *
+ * The main class and GUI. The user can open the controller of their choice, open
+ * the topology graph, open a topology file, open VeriFlow, configure PuTTY,
+ * configure the VM, and run the controller, Mininet or VeriFlow with respective
+ * command-line arguments.
  * @author 164776
  */
 public class MainGUI extends javax.swing.JFrame {
 
+    /**
+     * script: Used to parse and send command-line arguments to a terminal.
+     * username: The VM username.
+     * password: The VM password.
+     * cmd: String to execute command prompt.
+     * cmdPersist: String to execute command prompt and keep it alive. For debugging
+     * guestIP: The VM IP address.
+     * port: The VM port.
+     * loc: PuTTY's location.
+     * frame: MainGUI instance.
+     */
     public String script;
-    public final String name;
     public Inet4Address guestIP;
     public String username;
     public String password;
@@ -34,13 +47,13 @@ public class MainGUI extends javax.swing.JFrame {
     private static MainGUI frame;
 
     /**
-     * Creates new form MainGUI
+     * Creates new form MainGUI, and set default arguments.
+     * @throws java.net.UnknownHostException
      */
     public MainGUI() throws UnknownHostException {
         this.loc = "C:\\Program Files (x86)\\PuTTY";
         this.cmdPersist = "cmd /c start /wait cmd /k ^\"";
         this.cmd = "cmd /c start /wait cmd /c ^\"";
-        this.name = "python ";
         this.guestIP = (Inet4Address) InetAddress.getByName("192.168.56.102");
         this.username = "mininet";
         this.password = "mininet";
@@ -245,7 +258,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Run Script");
+        jButton4.setText("Run Controller");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -489,6 +502,7 @@ public class MainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //New Terminal button. Opens a blank terminal
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         MainPanel mPanel = new MainPanel(guestIP.getHostAddress(), username, password, 80, 24, 500, false);
         mPanel.setExitOnClose(false);
@@ -500,6 +514,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     //Open Mininet button.
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        //If set to This PC, transfers the topology file
         if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
             try {
                 if (jTextField3.getText().length() > 0) {
@@ -508,7 +523,7 @@ public class MainGUI extends javax.swing.JFrame {
                     Process p = rt.exec(cmd + script + "\"");
                     p.waitFor();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "The controller script field must not be empty.", "Controller script missing", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "The topology field must not be empty.", "Topology file missing", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException | InterruptedException ex) {
                 Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -523,9 +538,10 @@ public class MainGUI extends javax.swing.JFrame {
         mnPanel.setCommand(jTextField4.getText());
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    //Controller source location
+    //Controller source location.
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
+            //Reset text fields and disable browse buttons
             jTextField1.setText(null);
             jButton1.setEnabled(true);
             jTextField3.setText(null);
@@ -533,6 +549,7 @@ public class MainGUI extends javax.swing.JFrame {
             jTextField10.setText(null);
             jButton12.setEnabled(true);
         } else { //if (jComboBox1.getSelectedItem().toString().equals("Mininet"))
+            //
             jTextField1.setText("/home/mininet/pox/");
             jButton1.setEnabled(false);
             jTextField3.setText("/home/mininet/topologies/example.mn");
@@ -552,40 +569,23 @@ public class MainGUI extends javax.swing.JFrame {
         //dialog.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    //Exit Button
+    //Exit Button.
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     //Run Script Button
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /**
-         * script = (name+jTextField1.getText()+" log.level
-         * --"+jComboBox2.getSelectedItem().toString()+"
-         * "+jTextField2.getText()); Runtime rt = Runtime.getRuntime(); try {
-         * Process p = rt.exec("cmd /c start cmd /k \" " + script + " \""); }
-         * catch (IOException ex) {
-         * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
-         * ex); }
-         */
-
-        /**
-         * try { String test = new Shell.Plain( new SSHByPassword(
-         * guestIP.getHostAddress(), 22, username, password) ).exec("echo
-         * 'test'"); } catch (UnknownHostException ex) {
-         * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
-         * ex); } catch (IOException ex) {
-         * Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null,
-         * ex); }
-         */
         if (jTextField1.getText().length() == 0) {
             JOptionPane.showMessageDialog(frame, "The controller script field must not be empty.", "Controller script missing", JOptionPane.ERROR_MESSAGE);
         } else {
             Runtime rt = Runtime.getRuntime();
             if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
+                //Set the script to be the controller's location
                 script = ("\"" + loc + "\"\\pscp.exe -r -pw " + password + " \"" + jTextField1.getText() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
 
                 try {
+                    //Transfer the controller
                     Process p = rt.exec(cmd + script + "\"");
                     p.waitFor();
                     if (jTextField3.getText().length() > 0) {
@@ -606,15 +606,18 @@ public class MainGUI extends javax.swing.JFrame {
             mPanel.setX11Forwarding(true);
             mPanel.setVisible(true);
             if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
+                //Get the folder name to open it in the terminal
                 String ctlrFolder
                         = jTextField1.getText().substring(jTextField1.getText().lastIndexOf(("\\"))
                                 + 1);
 
+                //Install dos2unix to convert DOS line breaks to Unix
                 String command = ("sudo apt-get install dos2unix; "
                         + "cd /home/mininet/"
                         + ctlrFolder
                         + ";"
                         + "find . -type f -print0 | xargs -0 dos2unix");
+                //If the command line text field isn't empty, execute it
                 if (jTextField2.getText().length() > 2) {
                     command = command.concat("; cd /home/mininet/" + ctlrFolder
                             + "; "
@@ -630,7 +633,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    //PuTTY configuration Button
+    //PuTTY configuration Button.
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Runtime rt = Runtime.getRuntime();
         try {
@@ -640,7 +643,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    //Topology Script Browse Button
+    //Topology Script Browse Button. Code to transfer a file
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         final FileFilter mnFilter = new FileNameExtensionFilter("Mininet script", "mn", "py");
 
@@ -656,7 +659,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    //Topology File field
+    //Topology File field. If the field is null, disable the run mininet button.
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
         if (jTextField3.getText().length() == 0) {
             jButton7.setEnabled(false);
@@ -667,7 +670,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField3KeyTyped
 
-    //Controller Script Browse Button
+    //Controller Script Browse Button.
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jFileChooser1 = new JFileChooser() {
             @Override
@@ -689,7 +692,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    //VM Config Button
+    //VM Config Button.
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         JFrame tempFrame = new JFrame();
         tempFrame.add(jPanel2);
@@ -697,8 +700,10 @@ public class MainGUI extends javax.swing.JFrame {
         tempFrame.setVisible(true);
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    //VM Config OK Button
+    //VM Config OK Button.
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        //The if statements replace empty fields with the previous value.
+        //The else statements save the values in the text fields.
         if (!"".equals(jTextField5.getText())) {
             username = jTextField5.getText();
         } else {
@@ -732,7 +737,7 @@ public class MainGUI extends javax.swing.JFrame {
         tempFrame.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    //VM Config Cancel Button
+    //VM Config Cancel Button. Replaces the field values to the original values.
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         if (!getUsername().equals(jTextField5.getText())) {
             jTextField5.setText(getUsername());
@@ -753,7 +758,7 @@ public class MainGUI extends javax.swing.JFrame {
         tempFrame.dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    //VeriFlow Browse Button
+    //VeriFlow Browse Button.
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         jFileChooser1 = new JFileChooser() {
             @Override
@@ -787,6 +792,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     //Run VeriFlow Button
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        //Transfer the VeriFlow topology file
         if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
             JOptionPane.showMessageDialog(new JFrame(),
                     "Please select your VeriFlow topology file to transfer.",
@@ -809,6 +815,7 @@ public class MainGUI extends javax.swing.JFrame {
                 return;
             }
 
+            //Transfer VeriFlow, then the VeriFlow topology
             try {
                 if (jTextField10.getText().length() > 0) {
                     script = ("\"" + loc + "\"\\pscp.exe -r -pw " + password + " \"" + jTextField10.getText() + "\" " + username + "@" + getGuestIP() + ":/home/mininet/");
@@ -834,6 +841,7 @@ public class MainGUI extends javax.swing.JFrame {
         mPanel.setVisible(true);
         if (jComboBox1.getSelectedItem().toString().equals("This PC")) {
 
+            //dos2unix on VeriFlow
             String command = ("sudo apt-get install dos2unix; "
                     + "cd /home/mininet/VeriFlow"
                     + ";"
@@ -841,6 +849,7 @@ public class MainGUI extends javax.swing.JFrame {
             command = command.concat("; cd /home/mininet/VeriFlow"
                     + "; "
                     + "make clean all");
+            //Run VeriFlow with the given command
             if (jTextField11.getText().length() > 2) {
                 command = command.concat("; "
                         + jTextField11.getText());
@@ -906,6 +915,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     /**
+     * The main method. Starts a new GUI.
      * @param args the command line arguments
      */
     public static void main(String args[]) {
