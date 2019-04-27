@@ -1,11 +1,14 @@
 """Custom topology example
-One switche plus 3 host :
+One switch plus 3 host :
 
 
 Adding the 'topos' dict with a key/value pair to generate our newly defined
 topology enables one to pass in '--topo=mytopo' from the command line.
 
 This topo used to test ARP poisoning
+
+Only use the arp.txt file located in this directory while performing this experiment.
+Otherwise create your arp.txt file through the toolkit for your own topology.
 """
 
 from mininet.topo import Topo
