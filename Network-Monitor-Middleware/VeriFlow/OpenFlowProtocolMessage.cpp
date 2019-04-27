@@ -522,21 +522,21 @@ void OpenFlowProtocolMessage::processQueueGetConfigReply(const char* data, Proxy
 }
 
 void OpenFlowProtocolMessage::processMatch(const ofp_match* match, ProxyConnectionInfo& info, FILE* fp) {
-    fprintf(stdout, "[Match] wildcards %u in_port %u dl_src %02x:%02x:%02x:%02x:%02x:%02x dl_dst %02x:%02x:%02x:%02x:%02x:%02x\n",
-            ntohl(match->wildcards), ntohs(match->in_port),
-            match->dl_src[0], match->dl_src[1], match->dl_src[2],
-            match->dl_src[3], match->dl_src[4], match->dl_src[5],
-            match->dl_dst[0], match->dl_dst[1], match->dl_dst[2],
-            match->dl_dst[3], match->dl_dst[4], match->dl_dst[5]);
+    //fprintf(stdout, "[Match] wildcards %u in_port %u dl_src %02x:%02x:%02x:%02x:%02x:%02x dl_dst %02x:%02x:%02x:%02x:%02x:%02x\n",
+    //        ntohl(match->wildcards), ntohs(match->in_port),
+    //        match->dl_src[0], match->dl_src[1], match->dl_src[2],
+    //        match->dl_src[3], match->dl_src[4], match->dl_src[5],
+    //        match->dl_dst[0], match->dl_dst[1], match->dl_dst[2],
+    //        match->dl_dst[3], match->dl_dst[4], match->dl_dst[5]);
 
-    fprintf(stdout, " dl_vlan %u dl_vlan_pcp %u dl_type %u nw_tos %u nw_proto %u nw_src %u nw_dst %u tp_src %u tp_dst %u\n",
-            ntohs(match->dl_vlan), match->dl_vlan_pcp, ntohs(match->dl_type),
-            match->nw_tos, match->nw_proto,
-            ntohl(match->nw_src), ntohl(match->nw_dst),
-            ntohs(match->tp_src), ntohs(match->tp_dst));
+    //fprintf(stdout, " dl_vlan %u dl_vlan_pcp %u dl_type %u nw_tos %u nw_proto %u nw_src %u nw_dst %u tp_src %u tp_dst %u\n",
+    //        ntohs(match->dl_vlan), match->dl_vlan_pcp, ntohs(match->dl_type),
+    //        match->nw_tos, match->nw_proto,
+    //        ntohl(match->nw_src), ntohl(match->nw_dst),
+    //        ntohs(match->tp_src), ntohs(match->tp_dst));
 
-    fprintf(stdout, "nw_src %x nw_dst %x \n",
-            ntohl(match->nw_src), ntohl(match->nw_dst));
+    //fprintf(stdout, "nw_src %x nw_dst %x \n",
+    //        ntohl(match->nw_src), ntohl(match->nw_dst));
 
 
     extern check mtx[40];
@@ -557,9 +557,9 @@ void OpenFlowProtocolMessage::processMatch(const ofp_match* match, ProxyConnecti
     }
     temp.mac = mac;
 
-    printf("ip  :  %d    mac:  %ld\n", temp.ip, temp.mac);
+    //printf("ip  :  %d    mac:  %ld\n", temp.ip, temp.mac);
     int flag = 0;
-    if (temp.ip == 0 && temp.mac == 0) //for network initialisation
+    if (temp.ip == 0 && (match->nw_src == 0) && (match->nw_dst==0)) //for network initialisation
     {
         flag = 1;
     } else
@@ -567,6 +567,7 @@ void OpenFlowProtocolMessage::processMatch(const ofp_match* match, ProxyConnecti
         for (int i = 0; i < num; i++) {
             if (temp.ip == mtx[i].ip && temp.mac == mtx[i].mac) {
                 flag = 1;
+                //printf("ip : %d     mac: %ld, i: %d\n", mtx[i].ip, mtx[i].mac, i);
             }
         }
     }
@@ -575,11 +576,12 @@ void OpenFlowProtocolMessage::processMatch(const ofp_match* match, ProxyConnecti
 
         gettimeofday(&now, NULL);
         printf("%ld.%ld\n", now.tv_sec, now.tv_usec);
+        printf("ip  :  %d    mac:  %ld\n", temp.ip, temp.mac);
         printf("detect arp poison\n");
         arpflag = 1;
     }
 
 
 
-
+    
 }

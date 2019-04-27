@@ -1,0 +1,54 @@
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (NULL) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: `F, `F, Field 0 (0, 0), Field 1 (0, 0), Field 2 (536870913, 291), Field 3 (35020, 0), Field 4 (0, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (0, 0), Field 9 (0, 0), Field 10 (0, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: »x, »x, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2054, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772162, 0), Field 10 (2, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: ß, ß, Field 0 (3, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2054, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772162, 0), Field 9 (167772163, 0), Field 10 (2, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: H∆, H∆, Field 0 (3, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772162, 0), Field 9 (167772163, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (8, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: XÂ, XÂ, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772162, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (8, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: ÿÈ, ÿÈ, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772162, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: 8Ò, 8Ò, Field 0 (3, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772162, 0), Field 9 (167772163, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: à µà"µÃË, à µà"µÃË, Field 0 (2, 0), Field 1 (4, 0), Field 2 (4, 0), Field 3 (2054, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772164, 0), Field 9 (167772162, 0), Field 10 (2, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: 3µ5µlÂ, 3µ5µlÂ, Field 0 (2, 0), Field 1 (4, 0), Field 2 (4, 0), Field 3 (2054, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772162, 0), Field 9 (167772164, 0), Field 10 (2, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: H<µH>µ|+µò+µ, H<µH>µ|+µò+µ, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772162, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (8, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: †?µ†Aµú, †?µ†Aµú, Field 0 (3, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772162, 0), Field 9 (167772163, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (8, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: ‡`µ‡bµ7µ@, ‡`µ‡bµ7µ@, Field 0 (2, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2054, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772164, 0), Field 9 (167772163, 0), Field 10 (2, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: nµpµ$Xµ»Uµ, nµpµ$Xµ»Uµ, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2054, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772164, 0), Field 10 (2, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: ò{µò}µ¨eµhbµ, ò{µò}µ¨eµhbµ, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772164, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (8, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: ËöµËúµºpµÄêµ, ËöµËúµºpµÄêµ, Field 0 (2, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772164, 0), Field 9 (167772163, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (8, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.2) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: †µ¢µ‹èµpëµ, †µ¢µ‹èµpëµ, Field 0 (2, 0), Field 1 (4, 0), Field 2 (3, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772164, 0), Field 9 (167772163, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: 0ßµ0©µÙñµ–ìµ, 0ßµ0©µÙñµ–ìµ, Field 0 (1, 0), Field 1 (3, 0), Field 2 (4, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field 6 (0, 0), Field 7 (0, 0), Field 8 (167772163, 0), Field 9 (167772164, 0), Field 10 (1, 0), Field 11 (0, 0), Field 12 (0, 0), Field 13 (0, 0)
+
+[VeriFlow::traverseForwardingGraph] Found a BLACK HOLE for the following packet class as current location (10.0.0.3) not found in the graph.
+[VeriFlow::traverseForwardingGraph] PacketClass: ≈µ«µdûµ†¶µ, ≈µ«µdûµ†¶µ, Field 0 (2, 0), Field 1 (4, 0), Field 2 (4, 0), Field 3 (2048, 0), Field 4 (4095, 0), Field 5 (0, 0), Field
