@@ -437,9 +437,14 @@ public class TopologyGraph extends javax.swing.JFrame {
                             + pair.getFirst()
                             + ", "
                             + pair.getSecond()
-                            + " )");
+                    );
+                    if (l.getBandwidth() > 0) {
+                        script = script.concat(", cls=TCLink,bw=" 
+                                + l.getBandwidth());
+                    }
+                    script = script.concat(" )");
                 }
-
+                //code that creates and names a topology to be called in Mininet
                 script = script.concat("\n\n\ntopos = {"
                         + "\n\t '"
                         + name

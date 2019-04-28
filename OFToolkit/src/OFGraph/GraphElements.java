@@ -14,6 +14,7 @@ import org.apache.commons.collections15.Factory;
 /**
  * Class that adds functionality to the topology graph, e.g. creating vertices
  * and edges.
+ *
  * @author Dr. Greg M. Bernstein, modified by 164776
  */
 public class GraphElements {
@@ -54,6 +55,7 @@ public class GraphElements {
 
         /**
          * Returns the Vertex's IP address as a string.
+         *
          * @return The Vertex's IP, or null if it does not have one.
          */
         public String getIPtoString() {
@@ -87,6 +89,7 @@ public class GraphElements {
 
         /**
          * Used to get the respective image of the Vertex's type for the graph.
+         *
          * @return 0 if host, 1 if switch.
          */
         public Number getIconNum() {
@@ -105,11 +108,12 @@ public class GraphElements {
     public static class MyEdge {
 
         private String name;
+        private int bw;
 
         public MyEdge(String name) {
             this.name = name;
         }
-        
+
         public String getName() {
             return name;
         }
@@ -122,6 +126,24 @@ public class GraphElements {
         public String toString() {
             return name;
         }
+
+        /**
+         * 
+         * @return the bandwidth if initialised, -1 if not to signal that it has
+         * not been initialised
+         */
+        public int getBandwidth() {
+            try {
+                return bw;
+            } catch (NullPointerException e) {
+                return -1;
+            }
+        }
+
+        public void setBandwidth(int bw) {
+            this.bw = bw;
+        }
+
     }
 
     /**
@@ -148,6 +170,7 @@ public class GraphElements {
          * Creates a vertex, populates its fields and sends it to the graph.
          * Increments the host or switch count depending on its value, and
          * automatically assigns IP and MAC addresses based on its number.
+         *
          * @return The given vertex.
          */
         @Override
@@ -164,16 +187,13 @@ public class GraphElements {
                 }
                 if (hostCount < 256) {
                     v.setMAC("00:00:00:00:00:" + hex);
-                }
-                else if (hostCount < 65536) {
-                    v.setMAC("00:00:00:00:" + hex.substring(0,1) + ":" + hex.substring(2,3));
-                }
-                else {
+                } else if (hostCount < 65536) {
+                    v.setMAC("00:00:00:00:" + hex.substring(0, 1) + ":" + hex.substring(2, 3));
+                } else {
                     JOptionPane.showMessageDialog(new JFrame(), "You have reached 65536 hosts in this graph. You cannot create any more hosts.", "Host limit reached", JOptionPane.ERROR_MESSAGE);
                     return null;
                 }
-            }
-            else { //if (tpGraph.getTypeSwitch().isSelected())
+            } else { //if (tpGraph.getTypeSwitch().isSelected())
                 String name = "s" + switchCount++;
                 v = new MyVertex(name, iconNames[1]);
             }

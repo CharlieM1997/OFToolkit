@@ -33,7 +33,7 @@ public class MenuMousePlugin<V, E> extends AbstractPopupGraphMousePlugin {
     }
     
     /**
-     * Creates a new instance of PopupVertexEdgeMenuMousePlugin
+     * Creates a new instance of MenuMousePlugin
      * @param modifiers mouse event modifiers see the jung visualization Event class.
      */
     public MenuMousePlugin(int modifiers) {
@@ -44,6 +44,7 @@ public class MenuMousePlugin<V, E> extends AbstractPopupGraphMousePlugin {
      * Implementation of the AbstractPopupGraphMousePlugin method.
      * @param e Event
      */
+    @Override
     protected void handlePopup(MouseEvent e) {
         final VisualizationViewer<V,E> vv =
                 (VisualizationViewer<V,E>)e.getSource();
