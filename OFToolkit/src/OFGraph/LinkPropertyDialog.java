@@ -6,6 +6,9 @@
 package OFGraph;
 
 import static java.lang.Math.toIntExact;
+import java.text.ParseException;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -30,6 +33,9 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
         if (link.getBandwidth() > 0) {
             this.bwFormattedTextField.setValue(link.getBandwidth());
         }
+        if (link.getDelay() > 0) {
+            this.delayFormattedTextField.setValue(link.getDelay());
+        }
     }
 
     /**
@@ -46,6 +52,8 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         linkFormattedTextField = new javax.swing.JFormattedTextField(new String());
+        delayFormattedTextField = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edge Properties");
@@ -59,9 +67,45 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Bandwidth (Mbit/s):");
 
-        bwFormattedTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        NumberFormatter nff = new NumberFormatter(new java.text.DecimalFormat("#0.00")) {
+            // we have to allow the empty string, the call chain is
+            //      DefaultFormatter
+            //              DefaultDocumentFilter.remove
+            //              replace
+            //              canReplace
+            //              isValidEdit
+            //              stringToValue
+            public Object stringToValue(String string)
+            throws ParseException {
+                if (string == null || string.length() == 0) {
+                    return null;
+                }
+                return super.stringToValue(string);
+            }
+        };;
+        bwFormattedTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(nff));
 
         jLabel3.setText("Rename Link: ");
+
+        NumberFormatter nff0 = new NumberFormatter(new java.text.DecimalFormat("#0")) {
+            // we have to allow the empty string, the call chain is
+            //      DefaultFormatter
+            //              DefaultDocumentFilter.remove
+            //              replace
+            //              canReplace
+            //              isValidEdit
+            //              stringToValue
+            public Object stringToValue(String string)
+            throws ParseException {
+                if (string == null || string.length() == 0) {
+                    return null;
+                }
+                return super.stringToValue(string);
+            }
+        };;
+        delayFormattedTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(nff0));
+
+        jLabel2.setText("Delay (ms):");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,17 +121,22 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
                                 .add(18, 18, 18)
                                 .add(linkFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(layout.createSequentialGroup()
-                                .addContainerGap()
+                                .add(8, 8, 8)
                                 .add(jLabel1)
-                                .add(16, 16, 16)
+                                .add(18, 18, 18)
                                 .add(bwFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 97, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(layout.createSequentialGroup()
                                 .add(52, 52, 52)
                                 .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .add(0, 0, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(jButton1)))
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jButton1)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(jLabel2)
+                                .add(18, 18, 18)
+                                .add(delayFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 97, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -103,7 +152,11 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
                     .add(bwFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                .add(9, 9, 9)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(delayFormattedTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel2))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton1)
                 .add(14, 14, 14))
         );
@@ -115,10 +168,21 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
         link.setName((String) this.linkFormattedTextField.getValue());
         try {
             link.setBandwidth(toIntExact((Long) this.bwFormattedTextField.getValue()));
+        } catch (NullPointerException e) {
+            link.setBandwidth(-1);
         } catch (NumberFormatException | ArithmeticException e) {
             //do nothing
         } catch (ClassCastException e) {
             link.setBandwidth((Integer) this.bwFormattedTextField.getValue());
+        }  
+        try {
+            link.setDelay(toIntExact((Long) this.delayFormattedTextField.getValue()));
+        } catch (NullPointerException e) {
+            link.setDelay(-1);
+        } catch (NumberFormatException | ArithmeticException e) {
+            //do nothing
+        } catch (ClassCastException e) {
+            link.setDelay((Integer) this.delayFormattedTextField.getValue());
         }
         
         dispose();
@@ -127,8 +191,10 @@ public class LinkPropertyDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField bwFormattedTextField;
+    private javax.swing.JFormattedTextField delayFormattedTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JFormattedTextField linkFormattedTextField;

@@ -109,6 +109,7 @@ public class GraphElements {
 
         private String name;
         private int bw;
+        private int delay;
 
         public MyEdge(String name) {
             this.name = name;
@@ -144,6 +145,24 @@ public class GraphElements {
             this.bw = bw;
         }
 
+        /**
+         * 
+         * @return the delay if initialised, -1 if not to signal that it has
+         * not been initialised
+         */
+        public int getDelay() {
+            try {
+                return delay;
+            } catch (NullPointerException e) {
+                return -1;
+            }
+        }
+
+        public void setDelay(int delay) {
+            this.delay = delay;
+        }
+
+        
     }
 
     /**

@@ -59,6 +59,7 @@ import org.apache.commons.collections15.Transformer;
  * interactive graph, where the user can create and modify hosts, switches and
  * links as well as customise the controller. Then, the user can save their
  * graph as a Mininet and/or VeriFlow topology file.
+ *
  * @author 164776
  */
 public class TopologyGraph extends javax.swing.JFrame {
@@ -77,6 +78,7 @@ public class TopologyGraph extends javax.swing.JFrame {
     /**
      * Creates a new instance of the topology graph class, or returns the
      * existing instance.
+     *
      * @param parent The MainGUI JFrame parent.
      * @return An instance of this class.
      */
@@ -91,6 +93,7 @@ public class TopologyGraph extends javax.swing.JFrame {
 
     /**
      * Gets the instance of this graph.
+     *
      * @return The topology graph instance, or null if not initialised yet.
      */
     public static TopologyGraph getSharedGraph() {
@@ -210,6 +213,7 @@ public class TopologyGraph extends javax.swing.JFrame {
 
     /**
      * Sets the colour of the next vertex the user can add.
+     *
      * @return Transparent if host, cyan if switch.
      */
     Transformer<GraphElements.MyVertex, Paint> vertexColor = new Transformer<MyVertex, Paint>() {
@@ -236,13 +240,13 @@ public class TopologyGraph extends javax.swing.JFrame {
      * ImageIcon(TopologyGraph.class.getResource("/OFGraph/images/switch.png"));
      * }
      *
-     * 
+     *
      * @Override public void setIconMap(Map iconMap) { this.imgIconMap =
      * iconMap; } }
      */
-    
     /**
      * JUNG Icon Shape Transformer.
+     *
      * @param V A given vertex.
      */
     public class IconShapeTransformer<V> extends EllipseVertexShapeTransformer<V> {
@@ -287,6 +291,7 @@ public class TopologyGraph extends javax.swing.JFrame {
         /**
          * Applies the appropriate image to the appropriate vertex type to be
          * displayed on the visual graph.
+         *
          * @param v A given vertex.
          * @return The transformed vertex.
          */
@@ -345,6 +350,7 @@ public class TopologyGraph extends javax.swing.JFrame {
 
         /**
          * The save action. Detailed comments in-line.
+         *
          * @param e
          */
         @Override
@@ -438,9 +444,17 @@ public class TopologyGraph extends javax.swing.JFrame {
                             + ", "
                             + pair.getSecond()
                     );
-                    if (l.getBandwidth() > 0) {
-                        script = script.concat(", cls=TCLink,bw=" 
-                                + l.getBandwidth());
+                    if (l.getBandwidth() > 0 || l.getDelay() > 0) {
+                        script = script.concat(", cls=TCLink");
+                        if (l.getBandwidth() > 0) {
+                            script = script.concat(", bw="
+                                    + l.getBandwidth());
+                        }
+                        if (l.getDelay() > 0) {
+                            script = script.concat(", delay='"
+                                    + l.getDelay()
+                                    + "ms'");
+                        }
                     }
                     script = script.concat(" )");
                 }
@@ -531,9 +545,9 @@ public class TopologyGraph extends javax.swing.JFrame {
         //Boolean parseBoolean(String s) {
         //    return ("1".equals(s) ? Boolean.TRUE : ("0".equals(s) ? Boolean.FALSE : null));
         //}
-
         /**
          * The save action. Detailed comments in-line.
+         *
          * @param e
          */
         @Override
@@ -614,9 +628,9 @@ public class TopologyGraph extends javax.swing.JFrame {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(TopologyGraph.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             //VeriFlow requires an ARP cache of the topology
-            JOptionPane.showMessageDialog(new JFrame(), 
+            JOptionPane.showMessageDialog(new JFrame(),
                     "To ensure VeriFlow works with your topology, please save arp.txt inside your VeriFlow folder.",
                     "Save arp.txt to VeriFlow",
                     JOptionPane.PLAIN_MESSAGE);

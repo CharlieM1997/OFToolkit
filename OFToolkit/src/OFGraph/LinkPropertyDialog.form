@@ -34,9 +34,9 @@
                               <Component id="linkFormattedTextField" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="bwFormattedTextField" min="-2" pref="97" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -47,8 +47,15 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="delayFormattedTextField" min="-2" pref="97" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -70,7 +77,12 @@
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="bwFormattedTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="delayFormattedTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
@@ -93,10 +105,13 @@
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="bwFormattedTextField">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="#0" subtype="-1" type="0"/>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.text.DefaultFormatterFactory(nff)" type="code"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="NumberFormatter nff = new NumberFormatter(new java.text.DecimalFormat(&quot;#0.00&quot;)) {&#xa;                    // we have to allow the empty string, the call chain is&#xa;                    //      DefaultFormatter&#xa;                    //              DefaultDocumentFilter.remove&#xa;                    //              replace&#xa;                    //              canReplace&#xa;                    //              isValidEdit&#xa;                    //              stringToValue&#xa;                    public Object stringToValue(String string)&#xa;                        throws ParseException {&#xa;                        if (string == null || string.length() == 0) {&#xa;                            return null;&#xa;                        }&#xa;                        return super.stringToValue(string);&#xa;                    }&#xa;                };;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
@@ -111,6 +126,21 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(new String())"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="delayFormattedTextField">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.text.DefaultFormatterFactory(nff0)" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="NumberFormatter nff0 = new NumberFormatter(new java.text.DecimalFormat(&quot;#0&quot;)) {&#xa;                    // we have to allow the empty string, the call chain is&#xa;                    //      DefaultFormatter&#xa;                    //              DefaultDocumentFilter.remove&#xa;                    //              replace&#xa;                    //              canReplace&#xa;                    //              isValidEdit&#xa;                    //              stringToValue&#xa;                    public Object stringToValue(String string)&#xa;                        throws ParseException {&#xa;                        if (string == null || string.length() == 0) {&#xa;                            return null;&#xa;                        }&#xa;                        return super.stringToValue(string);&#xa;                    }&#xa;                };;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Delay (ms):"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
