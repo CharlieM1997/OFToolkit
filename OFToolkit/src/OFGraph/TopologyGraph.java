@@ -216,14 +216,11 @@ public class TopologyGraph extends javax.swing.JFrame {
      *
      * @return Transparent if host, cyan if switch.
      */
-    Transformer<GraphElements.MyVertex, Paint> vertexColor = new Transformer<MyVertex, Paint>() {
-        @Override
-        public Paint transform(GraphElements.MyVertex v) {
-            if (v.getType().equals("Host")) {
-                return new Color(0, 0, 0, 0);
-            } //else if v.getType().equals("Switch));
-            return Color.CYAN;
-        }
+    Transformer<GraphElements.MyVertex, Paint> vertexColor = (GraphElements.MyVertex v) -> {
+        if (v.getType().equals("Host")) {
+            return new Color(0, 0, 0, 0);
+        } //else if v.getType().equals("Switch));
+        return Color.CYAN;
     };
 
     /**

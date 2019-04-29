@@ -17,24 +17,21 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 /**
- * The main class and GUI. The user can open the controller of their choice, open
- * the topology graph, open a topology file, open VeriFlow, configure PuTTY,
- * configure the VM, and run the controller, Mininet or VeriFlow with respective
- * command-line arguments.
+ * The main class and GUI. The user can open the controller of their choice,
+ * open the topology graph, open a topology file, open VeriFlow, configure
+ * PuTTY, configure the VM, and run the controller, Mininet or VeriFlow with
+ * respective command-line arguments.
+ *
  * @author 164776
  */
 public class MainGUI extends javax.swing.JFrame {
 
     /**
      * script: Used to parse and send command-line arguments to a terminal.
-     * username: The VM username.
-     * password: The VM password.
-     * cmd: String to execute command prompt.
-     * cmdPersist: String to execute command prompt and keep it alive. For debugging
-     * guestIP: The VM IP address.
-     * port: The VM port.
-     * loc: PuTTY's location.
-     * frame: MainGUI instance.
+     * username: The VM username. password: The VM password. cmd: String to
+     * execute command prompt. cmdPersist: String to execute command prompt and
+     * keep it alive. For debugging guestIP: The VM IP address. port: The VM
+     * port. loc: PuTTY's location. frame: MainGUI instance.
      */
     public String script;
     public Inet4Address guestIP;
@@ -48,6 +45,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form MainGUI, and set default arguments.
+     *
      * @throws java.net.UnknownHostException
      */
     public MainGUI() throws UnknownHostException {
@@ -611,12 +609,14 @@ public class MainGUI extends javax.swing.JFrame {
                         = jTextField1.getText().substring(jTextField1.getText().lastIndexOf(("\\"))
                                 + 1);
 
-                //Install dos2unix to convert DOS line breaks to Unix
-                String command = ("sudo apt-get install dos2unix; "
-                        + "cd /home/mininet/"
-                        + ctlrFolder
-                        + ";"
-                        + "find . -type f -print0 | xargs -0 dos2unix");
+                //Install dos2unix to convert DOS line breaks to Unix.
+                //dos2unix skips files that don't have DOS line breaks, so OK
+                //for MAC/Linux OSes
+                    String command = ("sudo apt-get install dos2unix; "
+                            + "cd /home/mininet/"
+                            + ctlrFolder
+                            + ";"
+                            + "find . -type f -print0 | xargs -0 dos2unix");
                 //If the command line text field isn't empty, execute it
                 if (jTextField2.getText().length() > 2) {
                     command = command.concat("; cd /home/mininet/" + ctlrFolder
@@ -916,6 +916,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     /**
      * The main method. Starts a new GUI.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
