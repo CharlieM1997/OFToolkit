@@ -1,6 +1,6 @@
 # OpenFlow Toolkit
 
-## Version 1.2
+## Version 1.3
 
 Current features:
 * Transfer an OpenFlow controller and/or a Mininet topology from a local machine to a VM
@@ -9,7 +9,4 @@ Current features:
 * PuTTY Configuration
 * User VM configuration (e.g. username, IP, port, etc.)
 * VeriFlow support - Save topology as a VeriFlow topology, transfer VeriFlow to a VM and execute in a terminal
-
-To-do:
-
-* Add setup guide & tutorial
+* Setup guide, located in Appendix B of the report.
